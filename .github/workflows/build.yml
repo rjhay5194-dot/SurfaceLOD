@@ -9,33 +9,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 9.2.1
 
-      - name: Unzip project
+      - name: Check project files
         run: |
-          unzip -q surface-lod-step3-first-render-fixed.zip
-          echo "Files after unzip:"
-          find . -maxdepth 3 -type f | sort
-
-      - name: Check project
-        run: |
-          test -f surface-lod/build.gradle
-          echo "Found surface-lod/build.gradle!"
+          echo "Checking Surface LOD project..."
+          test -f build.gradle
+          test -f gradle.properties
+          test -f settings.gradle
+          test -f src/main/resources/fabric.mod.json
+          test -f src/main/java/com/surfacelod/SurfaceLodClient.java
+          test -f src/main/java/com/surfacelod/render/SurfaceLodRenderer.java
+          test -f src/main/java/com/surfacelod/sample/SurfaceLodStore.java
+          echo "All required files found!"
 
       - name: Build
-        working-directory: surface-lod
         run: gradle build --no-daemon
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
         with:
           name: surface-lod
-          path: surface-lod/build/libs/*.jar
+          path: build/libs/*.jar
