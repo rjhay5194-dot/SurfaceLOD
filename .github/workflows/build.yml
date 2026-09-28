@@ -1,0 +1,37 @@
+name: Build Surface LOD
+
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Extract project ZIP
+        run: |
+          mkdir extracted
+          unzip -o SurfaceLOD-Fabric-1.21.11-alpha.zip -d extracted
+
+      - name: Build
+        working-directory: extracted
+        run: gradle build --no-daemon
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: SurfaceLOD
+          path: extracted/build/libs/*.jar
