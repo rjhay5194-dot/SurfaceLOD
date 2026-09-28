@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "surfacelod",
+  "version": "${version}",
+  "name": "Surface LOD",
+  "description": "A lightweight surface terrain LOD system.",
+  "authors": [
+    "Surface LOD"
+  ],
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.surfacelod.SurfaceLodClient"
+    ],
+    "modmenu": [
+      "com.surfacelod.ModMenuIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~1.21.11",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "cloth-config": "*",
+    "modmenu": "*"
+  }
+}
